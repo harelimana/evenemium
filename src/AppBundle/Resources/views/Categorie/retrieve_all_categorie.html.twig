@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Categorie:retrieveAllCategorie{% endblock %}
+
+{% block body %}
+<h1>Welcome to the Categorie:retrieveAllCategorie page</h1>
+    <div class="help-block" style="height:50px;"></div>
+    {% for c in categorie %}
+        <div class="jumbotron">
+            <p>{{c.nom}}</p>
+            <p>{{c.description}}</p>
+            <a href="/supprimer_categorie/{{c.id}}" class="btn btn-danger pull-right">Supprimer</a></td>
+            <p>Evénements liés:</p>
+            {% for event in c.events %}
+                <ul>
+                    <li>{{ events.nom }}</li>
+                </ul>
+            {% endfor %}
+
+        </div>
+    {% endfor%}
+{% endblock %}
