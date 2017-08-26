@@ -8,11 +8,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class UserController extends Controller
 {
     /**
-     * @Route("/addUser")
+     * @Route("/addUser", name="addUser")
      */
     public function addUserAction()
     {
-        return $this->render('AppBundle:User:add_user.html.twig', array(
+        $user = new Users;
+        $form = $this->createForm(UsersType::class, $user);
+        /*   ->add('nom', TextType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
+           ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control', 'style' => 'margin-bottom:15px')))
+           ->add('Sauver', SubmitType::class, array('attr' => array('label' => 'Create Todo','class' => 'btn btn-primary', 'style' => 'margin-bottom:15px')))
+           ->getForm(); */
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addflash('notice', 'User ajouté');
+            return $this->redirectToroute('retrieveAllUsers');
+        }
+        return $this->render('AppBundle:User:add_user.html.twig', array('form'=>$form->createView()
             // ...
         ));
     }
@@ -28,11 +44,13 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/retrieveAll")
+     * @Route("/retrieveAll",name="retrieveAllUsers")
      */
     public function retrieveAllAction()
     {
-        return $this->render('AppBundle:User:retrieve_all.html.twig', array(
+        $users = $this->getDoctrine()->getRepository('AppBundle:Users')->findAll();
+        return $this->render('AppBundle:User:retrieve_all.html.twig', array('users'=>$users
+            
             // ...
         ));
     }

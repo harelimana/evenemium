@@ -4,4 +4,19 @@
 
 {% block body %}
 <h1>Welcome to the User:retrieveAll page</h1>
+<div class="help-block" style="height:50px;"></div>
+{% for u in users %}
+    <div class="jumbotron">
+        <p>{{u.username}}</p>
+        <p>{{u.profile_picture}}</p>
+        <a href="/supprimer_user/{{u.id}}" class="btn btn-danger pull-right">Supprimer</a></td>
+        <p>Evénements liés:</p>
+        {% for event in u.events %}
+            <ul>
+                <li>{{ event.nom }}</li>
+            </ul>
+        {% endfor %}
+
+    </div>
+{% endfor%
 {% endblock %}
